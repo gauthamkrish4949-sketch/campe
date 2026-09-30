@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+.success-wrap{max-width:680px;margin:70px auto;text-align:center}
+.success-icon{width:94px;height:94px;margin:0 auto 24px;display:grid;place-items:center;border-radius:50%;background:#22c55e22;border:2px solid #22c55e;color:#22c55e;font-size:52px;font-weight:700}
+.success-wrap h1{margin:10px 0 14px}
+.success-wrap p{line-height:1.7}
+.success-details{margin:28px 0;text-align:left}
+.success-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="brand" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne</a>
+<nav class="nav"><a href="/student/dashboard">Home</a><a href="/logout">Logout</a></nav>
+</header>
+<main class="container">
+<section class="panel success-wrap">
+<div class="success-icon">✓</div>
+<span class="badge">PAYMENT CONFIRMATION RECEIVED</span>
+<h1>Payment Submitted Successfully!</h1>
+<p>Your payment screenshot has been uploaded successfully and sent to the department admin for verification.</p>
+<div class="panel success-details">
+<p><strong>Student Name:</strong> {{ order['student_name'] or 'Not provided' }}</p><p><strong>Department:</strong> {{ order['department'] or 'Not provided' }}</p>
+<p><strong>Amount:</strong> ₹{{ '%.2f'|format(order['total_amount']) if order['total_amount'] is defined else '0.00' }}</p>
+<p><strong>Payment Status:</strong> <span class="badge">{{ order['payment_status'] }}</span></p>{% if order['payment_screenshot'] %}<p><strong>Uploaded screenshot:</strong> <a class="btn secondary" target="_blank" href="/student/payment/{{ service }}/{{ order['id'] }}/file">View uploaded file</a></p>{% endif %}
+</div>
+<p class="muted">This is a demo payment. Your order will be verified by the admin.</p>
+<div class="success-actions">
+<a class="btn" href="/student/dashboard">Back to Home</a>
+<a class="btn secondary" href="/track-orders">Track Orders</a>
+</div>
+</section>
+</main>
+<footer class="footer">© 2026 CampusOne · Demo Payment</footer>
+<script src="/js/app.js"></script></body>
+</html>

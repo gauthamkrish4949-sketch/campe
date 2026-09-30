@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Student Login | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth">
+<div class="auth-box">
+  <a class="brand link" href="/"><span class="brand-mark">C</span>CampusOne</a>
+  <h1>Student Sign In</h1>
+  <p>Enter your student credentials to access your personal campus workspace.</p>
+  {% for message in flash_messages %}
+  <div class="alert error">{{ message }}</div>
+  {% endfor %}
+  <form method="POST">
+    <input name="email" type="email" placeholder="Student email" required>
+    <input name="password" type="password" placeholder="Password" required>
+    <button class="btn" type="submit">Open Student Dashboard →</button>
+  </form>
+  <div class="demo">
+    <strong>Demo student</strong><br>
+    Email: student@campusone.com<br>
+    Password: student123
+  </div>
+  <p><a href="/login">🛡️ Go to Admin Portal</a></p>
+</div>
+<script src="/js/app.js"></script>
+</body>
+</html>

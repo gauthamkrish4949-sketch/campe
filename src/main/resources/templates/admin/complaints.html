@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Management | CampusOne</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .status-form { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .status-form select { min-width:170px; }
+    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-weight:700; font-size:.82rem; background:#eef2ff; color:#3730a3; }
+    .complaint-description { max-width:280px; white-space:normal; }
+    .notice { margin:18px 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/admin/dashboard"><span class="brand-mark">C</span>CampusOne <span class="badge">ADMIN</span></a>
+    <nav class="nav">
+      <a href="/admin/dashboard">Dashboard</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+  <main class="container">
+    <div class="dash-top">
+      <div>
+        <span class="badge">COMPLAINT MANAGEMENT</span>
+        <h1>Registered Complaints</h1>
+        <p class="muted">Review student complaints and update their progress.</p>
+      </div>
+    </div>
+    {% set messages = flash_messages %}
+      {% if messages %}<div class="alert notice">{{ messages[-1] }}</div>{% endif %}
+    
+    {% if complaints %}
+      <div class="panel" style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Student</th><th>Category</th><th>Location</th><th>Description</th><th>Attachment</th><th>Current Status</th><th>Update Status</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for complaint in complaints %}
+            <tr>
+              <td>#{{ complaint['id'] }}</td>
+              <td>{{ complaint['student_name'] }}<br><small class="muted">{{ complaint['student_email'] }}</small></td>
+              <td>{{ complaint['category'] }}</td>
+              <td>{{ complaint['location'] }}</td>
+              <td class="complaint-description">{{ complaint['description'] }}</td>
+              <td>
+                {% if complaint['image'] %}
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                    <a class="btn secondary" target="_blank" rel="noopener" href="/admin/complaints/file/{{ complaint['image'] }}">View File</a>
+                    <a class="btn" href="/admin/complaints/file/{{ complaint['image'] }}/download">Download</a>
+                  </div>
+                  <small class="muted">{{ complaint['image'] }}</small>
+                {% else %}
+                  <span class="muted">No file</span>
+                {% endif %}
+              </td>
+              <td><span class="status-pill">{{ complaint['status'] }}</span></td>
+              <td>
+                <form class="status-form" method="post" action="{{ url_for('update_complaint_status') }}">
+                  <input type="hidden" name="complaint_id" value="{{ complaint['id'] }}">
+                  <select name="status" required>
+                    {% for status in ['Submitted', 'Problem Noticed', 'In Progress', 'Problem Addressed', 'Closed'] %}
+                      <option value="{{ status }}" {% if complaint['status'] == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                  </select>
+                  <button class="btn" type="submit">Update</button>
+                </form>
+              </td>
+              <td>{{ complaint['created_at'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="panel"><h2>No complaints registered yet</h2><p class="muted">New student complaints will appear here.</p></div>
+    {% endif %}
+  </main>
+  <footer class="footer">© 2026 CampusOne · Complaint Management</footer>
+<script src="/js/app.js"></script></body>
+</html>

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Canteen Orders | CampusOne</title><link rel="stylesheet" href="/css/style.css"></head>
+<body>
+<header class="site-header"><a class="brand" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne</a><nav class="nav"><a href="/student/dashboard">Home</a><a href="/canteen">Menu</a><a href="/canteen/cart">Cart</a><a href="/logout">Logout</a></nav></header>
+<main class="container">
+<div class="dash-top"><div><span class="badge">ORDER TRACKING</span><h1>My Canteen Orders</h1><p class="muted">Track the progress of your food orders.</p></div><a class="btn secondary" href="/canteen">＋ New Order</a></div>
+{% set messages = flash_messages %}{% if messages %}<div class="alert">{{ messages[-1] }}</div>{% endif %}
+{% if orders %}<div class="cart-list">{% for order in orders %}<div class="cart-row"><div><h3>{{ order['student_name'] or 'Student' }}</h3><span class="muted">Department: {{ order['department'] or 'Not provided' }}</span><span class="muted">Placed: {{ order['created_at'] }}</span></div><div style="text-align:right"><strong>₹{{ '%.2f'|format(order['total_amount']) }}</strong><div class="badge" style="margin-top:8px">{{ order['status'] }}</div></div></div>{% endfor %}</div>{% else %}<div class="panel"><h2>No orders yet</h2><p class="muted">Your confirmed canteen orders will appear here.</p><a class="btn" href="/canteen">Browse Menu</a></div>{% endif %}
+</main><footer class="footer">© 2026 CampusOne · Order Tracking</footer><script src="/js/app.js"></script></body></html>

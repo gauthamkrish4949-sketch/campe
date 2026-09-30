@@ -1,0 +1,23 @@
+CAMPUSONE RENDER DEPLOYMENT
+
+Repository structure:
+  camp/
+    campusone-java/
+      Dockerfile
+      pom.xml
+      src/
+
+Render settings:
+  Service Type: Web Service
+  Environment: Docker
+  Root Directory: campusone-java
+  Dockerfile Path: Dockerfile
+
+Environment variable:
+  PORT=10000
+
+The Dockerfile builds the Spring Boot application with Java 17 and starts:
+  target/campusone-1.0.0.jar
+
+Important:
+  SQLite database and uploaded files use the local filesystem. Render's normal filesystem is ephemeral, so this deployment is suitable for a demo/hackathon. Persistent production data requires persistent storage/database setup.

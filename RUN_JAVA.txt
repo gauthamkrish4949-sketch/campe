@@ -1,0 +1,7 @@
+CampusOne Java
+1. Install JDK 17+ and Maven 3.9+.
+2. Open this folder in VS Code.
+3. Run: mvn spring-boot:run
+4. Browse: http://localhost:8080
+
+If Maven is not installed, install Maven and restart VS Code/terminal.

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><title>Complaints</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><header><div class="brand">CampusOne</div><nav><a href="/student/dashboard">Home</a><a class="cart-pill" href="/student/dashboard">🛒 Carts</a><a href="/logout">Logout</a></nav></header>
+<main class="container"><h1>Complaint Management</h1>
+{% set messages = flash_messages %}{% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}
+<form class="panel" method="POST" enctype="multipart/form-data">
+<select name="category" required><option value="">Category</option><option>Electrical</option><option>Plumbing</option><option>Wi-Fi</option><option>Cleanliness</option><option>Classroom</option><option>Other</option></select>
+<input name="location" placeholder="Location" required>
+<textarea name="description" placeholder="Describe the problem" required></textarea>
+<label for="complaint-image">Attach photo/file (optional)</label><input id="complaint-image" type="file" name="image" accept="image/*,.pdf"><div class="upload-preview" data-upload-preview="complaint-image" hidden></div>
+<button class="btn" type="submit">Submit Complaint</button>
+</form>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0"><a class="btn secondary" href="/complaints/track">Track Complaint Status</a></div><h2>My Complaints</h2>
+<div class="list">{% for c in complaints %}<div class="panel"><b>{{ c['category'] }}</b> — {{ c['status'] }}<br>{{ c['location'] }}<br>{{ c['description'] }}<small>{{ c['created_at'] }}</small>{% if c['status'] in ['Submitted', 'Problem Noticed', 'In Progress'] %}<form method="POST" action="/complaints/cancel" onsubmit="return confirm('Are you sure you want to cancel this complaint?');" style="margin-top:12px;"><input type="hidden" name="complaint_id" value="{{ c['id'] }}"><button type="submit" class="btn secondary" style="border-color:#ef4444;color:#dc2626;">Cancel Complaint</button></form>{% endif %}</div>{% else %}<p>No complaints yet.</p>{% endfor %}</div>
+</main><script src="/js/app.js"></script></body></html>

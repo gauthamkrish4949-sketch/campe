@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Canteen | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne</a>
+  <nav class="nav">
+    <a href="/student/dashboard">Dashboard</a>
+    <a href="/canteen/orders">My Orders</a>
+    <a class="cart-pill" href="/canteen/cart">🍽️ Cart ({{ cart_count }})</a>
+    <a href="/logout">Logout</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="dash-top" data-animate>
+    <div>
+      <span class="badge">CANTEEN MENU</span>
+      <h1>Today's Menu</h1>
+      <p class="muted">Fresh food and snacks. Choose your items, add to cart, and order.</p>
+    </div>
+    <a class="btn secondary" href="/canteen/cart">🍽️ View Cart ({{ cart_count }})</a>
+  </div>
+  
+  {% set messages = flash_messages %}{% if messages %}<div class="alert">{{ messages[-1] }}</div>{% endif %}
+  
+  <form method="get" class="search-bar-wrap" style="margin-bottom:30px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <input name="q" class="search-control" value="{{ search }}" placeholder="Search food items by name or category...">
+      </div>
+      <button class="btn" type="submit">🔍 Search</button>
+      {% if search %}
+      <a class="btn secondary" href="/canteen">Clear</a>
+      {% endif %}
+    </div>
+  </form>
+
+  {% if items %}
+  <div class="product-grid">
+    {% for item in items %}
+    <article class="product-card">
+      <div class="product-visual" title="{{ item['name'] }}">
+        {% set food_name = (item['name'] ~ ' ' ~ item['category'])|lower %}
+        {% if 'tea' in food_name or 'chai' in food_name %}🍵
+        {% elif 'coffee' in food_name %}☕
+        {% elif 'juice' in food_name or 'shake' in food_name or 'smoothie' in food_name %}🥤
+        {% elif 'water' in food_name %}💧
+        {% elif 'burger' in food_name %}🍔
+        {% elif 'pizza' in food_name %}🍕
+        {% elif 'sandwich' in food_name %}🥪
+        {% elif 'dosa' in food_name %}🥞
+        {% elif 'idli' in food_name %}⚪
+        {% elif 'biryani' in food_name %}🍛
+        {% elif 'rice' in food_name or 'meals' in food_name %}🍚
+        {% elif 'noodle' in food_name %}🍜
+        {% elif 'samosa' in food_name %}🥟
+        {% elif 'puff' in food_name or 'pastry' in food_name %}🥐
+        {% elif 'cake' in food_name %}🍰
+        {% elif 'ice' in food_name or 'kulfi' in food_name %}🍨
+        {% elif 'fruit' in food_name %}🍎
+        {% elif 'chip' in food_name or 'snack' in food_name %}🍿
+        {% elif 'egg' in food_name %}🥚
+        {% elif 'chicken' in food_name %}🍗
+        {% elif 'fish' in food_name %}🐟
+        {% else %}🍽️{% endif %}
+      </div>
+      <h2>{{ item['name'] }}</h2>
+      <p style="margin:0 0 4px;font-size:13px;color:var(--muted)">{{ item['category'] }}</p>
+      <div class="price">₹{{ '%.2f'|format(item['price']) }}</div>
+      <div class="stock">{{ item['stock'] }} available</div>
+      <a class="btn" href="/canteen/add/{{ item['id'] }}">＋ Add to Cart</a>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="panel" style="text-align:center;padding:48px 24px">
+    <h2>No food items available</h2>
+    <p class="muted">No menu items matched your search query. Please check back later.</p>
+    {% if search %}<a class="btn secondary" href="/canteen" style="margin-top:14px">View All Menu Items</a>{% endif %}
+  </div>
+  {% endif %}
+</main>
+<footer class="footer">© 2026 CampusOne · Canteen</footer>
+<script src="/js/app.js"></script>
+</body>
+</html>

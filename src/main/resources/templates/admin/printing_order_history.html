@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Printing Order History | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="/admin/dashboard"><span class="brand-mark">C</span>CampusOne <span class="badge">ADMIN</span></a><nav class="nav"><a href="/admin/dashboard">Dashboard</a><a href="/logout">Logout</a></nav></header>
+<main class="shell dashboard">
+<div class="dash-top"><div><span class="badge">PRINTING ADMIN</span><h1>Printing Order History</h1><p class="muted">Completed printing orders archived using the green tick.</p></div></div>
+{% set messages = flash_messages %}{% if messages %}<div class="alert">{{ messages[-1] }}</div>{% endif %}
+<section class="panel" style="margin-top:24px"><div style="overflow-x:auto"><table><thead><tr><th>Student</th><th>Department</th><th>Filename</th><th>Pages</th><th>Copies</th><th>Color</th><th>Sides</th><th>Amount</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody>
+{% for order in orders %}<tr><td>{{ order['customer_name'] }}</td><td>{{ order['customer_department'] or 'Not provided' }}</td><td>{{ order['filename'] }}<br><a class="btn secondary" href="/admin/printing/file/{{ order['filename'] }}">Download File</a></td><td>{{ order['page_count'] or 1 }}</td><td>{{ order['copies'] }}</td><td>{{ order['color'] }}</td><td>{{ order['sides'] }}</td><td>₹{{ '%.2f'|format(order['total_amount'] or 0) }}</td><td><span class="badge">{{ order['status'] }}</span></td><td>{{ order['created_at'] }}</td><td><form method="post" action="/admin/printing/orders/restore" onsubmit="return confirm('Restore this order to active orders?');"><input type="hidden" name="order_id" value="{{ order['id'] }}"><button class="btn secondary" type="submit">↩ Restore</button></form></td></tr>{% else %}<tr><td colspan="11">No printing history found.</td></tr>{% endfor %}
+</tbody></table></div></section>
+</main><footer class="footer">© 2026 CampusOne · Printing History</footer>
+<script src="/js/app.js"></script></body></html>

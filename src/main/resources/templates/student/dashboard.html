@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Student Dashboard | CampusOne</title><link rel="stylesheet" href="/css/style.css"></head><body>
+<header class="site-header"><a class="brand link" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne <span class="badge">STUDENT</span></a><nav class="nav"><a class="btn header-action" href="/track-orders">📦 Track My Orders</a><a class="btn header-action" href="/store/cart">🛒 Store Cart ({{ store_cart_count }})</a><a class="btn header-action" href="/canteen/cart">🍽️ Canteen Cart ({{ canteen_cart_count }})</a><span class="muted">Hi, {{ name }}</span><a href="/logout">Logout</a></nav></header>
+<main class="shell dashboard">
+{% set messages = flash_messages %}
+  {% if messages %}
+    <div class="alert" role="status" style="margin-bottom:22px">
+      ✅ {{ messages[-1] }}
+    </div>
+  {% endif %}
+
+<div class="dash-top"><div><span class="badge">STUDENT WORKSPACE</span><h1>Welcome back, {{ first_name }} 👋</h1><p class="muted">Everything you need for your campus life, in one place.</p></div><a class="btn secondary" href="/">Portal Home</a></div>
+<div class="service-grid"><a class="service" href="/track-orders"><div class="icon">📦</div><h3>Track My Orders</h3><p>View all your store, canteen and printing orders in one place.</p><span class="arrow">Track orders →</span></a><a class="service" href="/complaints"><div class="icon">📝</div><h3>Complaints</h3><p>Report a campus issue and track its status.</p><span class="arrow">Open service →</span></a><a class="service" href="/store"><div class="icon">🛒</div><h3>College Store</h3><p>Find notebooks, files, pens and other supplies.</p><span class="arrow">Browse store →</span></a><a class="service" href="/canteen"><div class="icon">🍱</div><h3>Canteen</h3><p>Explore available drinks, snacks and meals.</p><span class="arrow">View menu →</span></a><a class="service" href="/printing"><div class="icon">🖨️</div><h3>Printing</h3><p>Upload a document and send your print request.</p><span class="arrow">Print a file →</span></a></div>
+<div class="panel" style="margin-top:22px"><span class="badge">QUICK ACCESS</span><h2>Student account</h2><p class="muted">Signed in as <strong>{{ name }}</strong>. Use the navigation cards above to access CampusOne services.</p></div></main><footer class="footer">© 2026 CampusOne · Student Portal</footer><script src="/js/app.js"></script><script src="/js/app.js"></script></body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Canteen Food Management | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/admin/dashboard"><span class="brand-mark">C</span>CampusOne <span class="badge">ADMIN</span></a>
+  <nav class="nav"><a href="/admin/dashboard">Dashboard</a><a href="/logout">Logout</a></nav>
+</header>
+<main class="shell dashboard">
+  <div class="dash-top">
+    <div><span class="badge">CANTEEN ADMIN</span><h1>Food Item Management</h1><p class="muted">Add and review canteen food items. Student cart options are not shown here.</p></div>
+  </div>
+  {% set messages = flash_messages %}{% if messages %}<div class="alert">{{ messages[-1] }}</div>{% endif %}
+  <section class="panel">
+    <h2>＋ Add Food Item</h2>
+    <form method="post" class="form-grid">
+      <label>Food Name<input name="name" required placeholder="e.g. Veg Sandwich"></label>
+      <label>Category<input name="category" required placeholder="e.g. Snacks"></label>
+      <label>Price (₹)<input type="number" name="price" min="0" step="0.01" required placeholder="40"></label>
+      <label>Initial Stock<input type="number" name="stock" min="0" value="50" required placeholder="50"></label>
+      <label><input type="checkbox" name="available" checked> Available for students</label>
+      <div><button class="btn" type="submit">Add Food Item</button></div>
+    </form>
+  </section>
+  <section class="panel" style="margin-top:24px"><form method="get" class="form-grid"><label>Search food items<input name="q" class="search-control" value="{{ search|default('') }}" placeholder="Search by name or category"></label><div><button class="btn" type="submit">🔍 Search</button><a class="btn secondary" href="/admin/canteen/items">Clear</a></div></form></section><section class="panel" style="margin-top:24px">
+    <h2>Existing Food Items</h2>
+    <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Availability</th><th>Update Stock</th><th>Action</th></tr></thead><tbody>
+    {% for item in items %}<tr><td>{{ item['name'] }}</td><td>{{ item['category'] }}</td><td>₹{{ '%.2f'|format(item['price']) }}</td><td>{{ item['stock'] }}</td><td>{{ 'Available' if item['available'] and item['stock'] > 0 else 'Unavailable' }}</td><td><form method="post" action="/admin/canteen/items/update-stock" style="display:flex;gap:6px;align-items:center"><input type="hidden" name="item_id" value="{{ item['id'] }}"><input name="stock" type="number" min="0" value="{{ item['stock'] }}" style="max-width:90px" required><button class="btn" type="submit">Update</button></form></td><td>{% if not item['available'] or item['stock'] <= 0 %}<form method="post" action="/admin/canteen/items/delete"><input type="hidden" name="item_id" value="{{ item['id'] }}"><button class="btn" type="submit" onclick="return confirm('Remove this unavailable food item?')">Remove</button></form>{% else %}<span class="muted">Available</span>{% endif %}</td></tr>{% else %}<tr><td colspan="7">No food items found.</td></tr>{% endfor %}
+    </tbody></table></div>
+  </section>
+</main>
+<footer class="footer">© 2026 CampusOne · Canteen Admin</footer>
+<script src="/js/app.js"></script></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Track My Orders | CampusOne</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand link" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne <span class="badge">STUDENT</span></a>
+  <nav class="nav"><a href="/student/dashboard">Dashboard</a><a href="/student/dashboard">🛒 Carts</a><a href="/logout">Logout</a></nav>
+</header>
+<main class="shell dashboard">
+  <div class="dash-top"><div><span class="badge">ORDER TRACKING</span><h1>Track My Orders 📦</h1><p class="muted">Track your College Store, Canteen and Printing orders from one page.</p></div><a class="btn secondary" href="/student/dashboard">Back to Dashboard</a></div>
+  {% if orders %}
+  <div class="panel" style="margin-top:22px;overflow-x:auto">
+    <table class="data-table" style="width:100%;border-collapse:collapse">
+      <thead><tr><th>Service</th><th>Student Name</th><th>Department</th><th>Details</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+      {% for order in orders %}
+      <tr>
+        <td><strong>{{ order.type }}</strong></td>
+        <td>{{ order.student_name or 'Not provided' }}</td><td>{{ order.department or 'Not provided' }}</td>
+        <td>{{ order.details }}</td>
+        <td>{% if order.amount is not none %}₹{{ '%.2f'|format(order.amount) }}{% else %}—{% endif %}</td>
+        <td><span class="badge">{{ order.status }}</span></td>
+        <td>{{ order.created_at }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="panel" style="margin-top:22px;text-align:center"><h2>No orders yet</h2><p class="muted">Your store, canteen and printing orders will appear here after you place them.</p><a class="btn" href="/student/dashboard">Explore Services</a></div>
+  {% endif %}
+</main>
+<footer class="footer">© 2026 CampusOne · Order Tracking</footer>
+<script src="/js/app.js"></script></body>
+</html>

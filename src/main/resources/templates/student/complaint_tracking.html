@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Complaint Status | CampusOne</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><header class="site-header"><a class="brand" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne</a><nav class="nav"><a href="/student/dashboard">Home</a><a href="/complaints">New Complaint</a><a href="/logout">Logout</a></nav></header><main class="container"><div class="dash-top"><div><span class="badge">COMPLAINT TRACKING</span><h1>Track Complaint Status</h1><p class="muted">View the current status of your submitted complaints.</p></div><a class="btn secondary" href="/student/dashboard">Back to Home</a></div>{% if complaints %}<div class="cart-list">{% for c in complaints %}<div class="cart-row"><div><h3>#{{ c['id'] }} · {{ c['category'] }}</h3><span class="muted">{{ c['location'] }} · {{ c['created_at'] }}</span><p class="muted">{{ c['description'] }}</p></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:150px;">
+<span class="badge">{{ c['status'] }}</span>
+{% if c['status'] in ['Submitted', 'Problem Noticed', 'In Progress', 'Problem Addressed', 'Closed'] %}
+<form method="POST" action="/complaints/cancel" onsubmit="return confirm('Are you sure you want to cancel this complaint?');">
+<input type="hidden" name="complaint_id" value="{{ c['id'] }}">
+<button type="submit" class="btn secondary" style="border-color:#ef4444;color:#dc2626;">Cancel Complaint</button>
+</form>
+{% elif c['status'] == 'Cancelled' %}
+<small class="muted">Cancelled by you</small>
+{% endif %}
+</div></div>{% endfor %}</div>{% else %}<div class="panel"><h2>No complaints yet</h2><a class="btn" href="/complaints">Register Complaint</a></div>{% endif %}</main><footer class="footer">© 2026 CampusOne · Complaint Tracking</footer><script src="/js/app.js"></script></body></html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Canteen Cart | CampusOne</title><link rel="stylesheet" href="/css/style.css"></head>
+<body>
+<header class="site-header"><a class="brand" href="/student/dashboard"><span class="brand-mark">C</span>CampusOne</a><nav class="nav"><a href="/student/dashboard">Home</a><a href="/canteen">Menu</a><a href="/store/cart">Store Cart</a><a href="/canteen/orders">My Orders</a><a href="/logout">Logout</a></nav></header>
+<main class="container">
+<div class="dash-top"><div><span class="badge">CANTEEN CART</span><h1>Your Food Cart</h1><p class="muted">Review your items before confirming the order.</p></div><a class="btn secondary" href="/canteen">＋ Add More Items</a></div>
+{% set messages = flash_messages %}{% if messages %}<div class="alert">{{ messages[-1] }}</div>{% endif %}
+{% if items %}
+<div class="cart-list">{% for item in items %}<div class="cart-row"><div><h3>{{ item['item']['name'] }}</h3><span class="muted">{{ item['item']['category'] }} · ₹{{ '%.2f'|format(item['item']['price']) }} each</span><div style="display:flex;align-items:center;gap:10px;margin-top:12px"><form method="POST" action="/canteen/cart/decrease/{{ item['item']['id'] }}"><button class="btn secondary" type="submit">−</button></form><strong style="min-width:24px;text-align:center">{{ item['quantity'] }}</strong><form method="POST" action="/canteen/cart/increase/{{ item['item']['id'] }}"><button class="btn secondary" type="submit">＋</button></form></div></div><strong>₹{{ '%.2f'|format(item['line_total']) }}</strong></div>{% endfor %}</div>
+<div class="panel cart-total" style="margin-top:22px"><span>Total</span><span>₹{{ '%.2f'|format(total) }}</span></div>
+<div class="cart-actions"><form method="POST" action="/canteen/place-order" class="order-form"><div class="order-field"><label for="canteen-student-name"><span class="field-icon">◉</span> Student Name</label><input id="canteen-student-name" name="student_name" placeholder="Enter your full name" autocomplete="name" required></div><div class="order-field"><label for="canteen-department"><span class="field-icon">⌘</span> Department</label><input id="canteen-department" name="department" placeholder="Enter your department" required></div><button class="btn" type="submit">✓ Confirm Order</button></form><a class="btn secondary" href="/canteen/cart/clear">Clear Cart</a></div>
+{% else %}<div class="panel"><h2>Your canteen cart is empty 🍽️</h2><p class="muted">Choose something from today's menu to get started.</p><a class="btn" href="/canteen">Browse Menu</a></div>{% endif %}
+</main><footer class="footer">© 2026 CampusOne · Canteen Cart</footer><script src="/js/app.js"></script></body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><title>Printing</title><link rel="stylesheet" href="/css/style.css"></head>
+<body><header><div class="brand">CampusOne Printing</div><nav><a href="/student/dashboard">Dashboard</a><a class="cart-pill" href="/student/dashboard">🛒 Carts</a></nav></header>
+<main class="container"><h1>Print a Document</h1>
+{% set messages = flash_messages %}{% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}
+<form class="panel" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="page_count" id="hidden-page-count" value="1">
+<label for="print-file">Choose document</label><input id="print-file" type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx" required><div class="upload-preview" data-upload-preview="print-file" hidden></div>
+<div class="print-fields" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px">
+<label>Pages detected <input type="text" id="page-count" value="Auto-detected after upload" readonly></label>
+<label>Number of copies required <input type="number" name="copies" id="copies" value="1" min="1" required></label>
+</div>
+<label>Print type<select name="color" id="color"><option>B&W</option><option>Colour</option></select></label>
+<label>Printing sides<select name="sides"><option>Single</option><option>Double</option></select></label><p id="amount-preview" style="font-weight:700;margin-top:12px">Estimated amount: ₹2.00</p>
+<input name="student_name" placeholder="Student name" required><input name="department" placeholder="Department" required><button class="btn" type="submit">Submit Print Order</button>
+</form><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
+const copies = document.getElementById('copies');
+const color = document.getElementById('color');
+const preview = document.getElementById('amount-preview');
+const fileInput = document.getElementById('print-file');
+const pageCountField = document.getElementById('page-count');
+const hiddenPageCount = document.getElementById('hidden-page-count');
+let detectedPages = 1;
+function updateAmount(){
+  if (hiddenPageCount) hiddenPageCount.value = detectedPages;
+  const rate = color.value === 'Colour' ? 5 : 2;
+  const count = Math.max(1, Number(copies.value || 1));
+  preview.textContent = 'Estimated amount: ₹' + (detectedPages * count * rate).toFixed(2) + ' (' + detectedPages + ' page(s) × ' + count + ' copy/copies)';
+}
+fileInput.addEventListener('change', async function(){
+  const file = fileInput.files[0];
+  detectedPages = 1;
+  pageCountField.value = file ? (file.name.toLowerCase().endsWith('.pdf') ? 'Counting PDF pages…' : '1 page (estimate)') : 'Auto-detected after upload';
+  updateAmount();
+  if (file && file.name.toLowerCase().endsWith('.pdf') && window.pdfjsLib) {
+    try {
+      const buffer = await file.arrayBuffer();
+      const pdf = await window.pdfjsLib.getDocument({data: buffer}).promise;
+      detectedPages = Math.max(1, pdf.numPages);
+      pageCountField.value = detectedPages + ' page(s) detected';
+    } catch (error) {
+      pageCountField.value = 'PDF pages verified on submit';
+    }
+    updateAmount();
+  }
+});
+copies.addEventListener('input', updateAmount); color.addEventListener('change', updateAmount); updateAmount();
+</script></main><script src="/js/app.js"></script></body></html>

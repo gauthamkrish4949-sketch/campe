@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CampusOne | Smart College Portal</title>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+#constellation-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+.site-header, main, footer {
+  position: relative;
+  z-index: 10;
+}
+</style>
+</head>
+<body>
+<canvas id="constellation-canvas"></canvas>
+<header class="site-header">
+  <a class="brand link" href="/"><span class="brand-mark">C</span>CampusOne</a>
+  <nav class="nav"><a href="#services">Services</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="shell hero-inner">
+      <span class="eyebrow"><i class="dot"></i> SMART COLLEGE CAMPUS PLATFORM</span>
+      <h1>One campus.<br><span class="gradient">Every service.</span></h1>
+      <p>A beautiful single portal for students and administrators to manage complaints, printing, the college store, canteen services and campus operations.</p>
+      <div class="portal-grid">
+        <a class="portal-card" href="/student/login" data-animate>
+          <div class="portal-icon">🎓</div>
+          <h2>Student Portal</h2>
+          <p>Access your student services, submit complaints, send printing jobs, browse the store and view the canteen.</p>
+          <span class="portal-link">Enter Student Portal →</span>
+        </a>
+        <a class="portal-card" href="/login" data-animate>
+          <div class="portal-icon">🛡️</div>
+          <h2>Admin Portal</h2>
+          <p>Monitor campus activity with statistics for students, complaints, products, canteen items and print orders.</p>
+          <span class="portal-link">Enter Admin Portal →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section id="services" class="shell features">
+    <div class="feature"><b>📝 Complaints</b><span>Submit and track campus issues.</span></div>
+    <div class="feature"><b>🖨️ Printing</b><span>Upload documents for printing.</span></div>
+    <div class="feature"><b>🛒 Store</b><span>Browse stationery and supplies.</span></div>
+    <div class="feature"><b>🍱 Canteen</b><span>View available food items.</span></div>
+  </section>
+</main>
+<footer class="footer">© 2026 CampusOne · Smart College Campus Platform</footer>
+<script src="/js/app.js"></script>
+</body>
+</html>
